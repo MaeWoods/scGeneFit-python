@@ -251,6 +251,41 @@ def circles_example(N=30, d=5):
                 data[N + 1:2 * N, 2], c='g', marker='x')
     plt.show()
 
+def replot_marker_selection(data, markers, names, X_embedded, perplexity=20):
+    cmap = plt.cm.RdYlBu
+    unique_names = ['BackgroundReactionHighest', 'BackgroundReactionHigh','BackgroundReactionLow','BackgroundReactionLowest','NoMarkerLow', 'NoMarkerLowest','CrossreactiveHigh','CrossreactiveLow','CrossreactiveLowest','UniqueLow','UniqueLowest','BaselineLowest','Unmapped']
+
+    num_labels = len(unique_names)
+    Backunique_names = ['BackgroundReactionHighest', 'BackgroundReactionHigh','BackgroundReactionLow','BackgroundReactionLowest']
+    Nomark_names = ['NoMarkerLow', 'NoMarkerLowest']
+    
+    mylist = names
+    L1=np.concatenate((np.where(mylist.array == Backunique_names[0])[0],np.concatenate((np.concatenate((np.where(mylist.array == Backunique_names[1])[0],np.where(mylist.array == Backunique_names[2])[0])),np.where(mylist.array == Backunique_names[3])[0]))))
+    L2=np.concatenate((np.where(mylist.array == Nomark_names[0])[0],np.where(mylist.array == Nomark_names[1])[0]))
+    L3=np.where(mylist.array == 'CrossreactiveHigh')[0]
+    L4=np.where(mylist.array == 'CrossreactiveLow')[0]
+    L5=np.where(mylist.array == 'CrossreactiveLowest')[0]
+    L6=np.where(mylist.array == 'UniqueLow')[0]
+    L7=np.where(mylist.array == 'UniqueLowest')[0]
+    L8=np.where(mylist.array == 'BaselineLowest')[0]
+    L9=np.where(mylist.array == 'Unmapped')[0]
+
+    fig = plt.figure()
+    ax = fig.add_subplot(1,1,1)
+    sns.kdeplot(x=X_embedded[:, 0], y=X_embedded[:, 1], color="oldlace", fill=True,alpha=0.7,zorder=1)
+    ax.scatter(X_embedded[L1, 0], X_embedded[L1, 1], color='navy',alpha=0.5,zorder=2)
+    ax.scatter(X_embedded[L2, 0], X_embedded[L2, 1], color='palegoldenrod',alpha=0.5,zorder=3)
+    ax.scatter(X_embedded[L3, 0], X_embedded[L3, 1], color='darkred',alpha=0.5,zorder=4)
+    ax.scatter(X_embedded[L4, 0], X_embedded[L4, 1], color='firebrick',alpha=0.5,zorder=5)
+    ax.scatter(X_embedded[L5, 0], X_embedded[L5, 1], color='red',zorder=6)
+    ax.scatter(X_embedded[L6, 0], X_embedded[L6, 1], color='pink',zorder=7)
+    ax.scatter(X_embedded[L7, 0], X_embedded[L7, 1], color='mediumorchid',zorder=8)
+    ax.scatter(X_embedded[L8, 0], X_embedded[L8, 1], color='silver',zorder=9)
+    ax.scatter(X_embedded[L9, 0], X_embedded[L9, 1], color='lemonchiffon',alpha=0.5,zorder=10)
+
+    ax.set_title('{} markers'.format(len(markers)))
+
+    return fig
 
 def plot_marker_selection(data, markers, names, perplexity=40):
     print('Computing TSNE embedding')
